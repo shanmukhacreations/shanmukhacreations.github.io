@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <title>Shanmukha Creations — Cinematographer · VFX Artist · Director</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--black:#080808;--card:#111;--border:#1e1e1e;--silver:#C0C0C0;--bright:#E8E8E8;--muted:#555;--white:#F5F5F5}
+    html{scroll-behavior:smooth}
+    body{background:var(--black);color:var(--bright);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden}
+    body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:0.22;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")}
+
+    /* CURSOR */
+    #cur,#cur-ring{position:fixed;border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%)}
+    #cur{width:8px;height:8px;background:var(--silver);mix-blend-mode:difference;transition:width .15s,height .15s}
+    #cur-ring{width:32px;height:32px;border:1px solid rgba(192,192,192,0.4);transition:left .1s ease,top .1s ease,width .2s,height .2s}
+    body.cur-hover #cur{width:18px;height:18px}
+    body.cur-hover #cur-ring{width:52px;height:52px}
+    @media(hover:none){#cur,#cur-ring{display:none}}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.4rem 3rem;background:linear-gradient(to bottom,rgba(8,8,8,.96),transparent)}
+    .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.12em;color:var(--white);text-decoration:none}
+    .nav-logo span{color:var(--silver)}
+    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-links a{font-size:.68rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+    .nav-links a:hover{color:var(--silver)}
+    .nav-cta{font-size:.68rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--black);background:var(--silver);padding:.55rem 1.3rem;border-radius:2px;text-decoration:none;transition:background .2s}
+    .nav-cta:hover{background:var(--white)}
+    .nav-mob{display:none;background:none;border:none;color:var(--silver);font-size:1.5rem;cursor:pointer;line-height:1;padding:.2rem}
+    .mob-menu{display:none;position:fixed;inset:0;background:rgba(8,8,8,.97);z-index:300;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+    .mob-menu.open{display:flex}
+    .mob-menu a{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.08em;color:var(--white);text-decoration:none;transition:color .2s}
+    .mob-menu a:hover{color:var(--silver)}
+    .mob-close{position:absolute;top:1.5rem;right:2rem;background:none;border:none;color:var(--silver);font-size:1.6rem;cursor:pointer}
+
+    /* TICKER */
+    .ticker{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--silver);height:30px;overflow:hidden;display:flex;align-items:center}
+    .ticker-track{display:flex;animation:tick 35s linear infinite;white-space:nowrap;will-change:transform}
+    .ticker-item{font-family:'Bebas Neue',sans-serif;font-size:.7rem;letter-spacing:.25em;color:var(--black);padding:0 2rem}
+    .ticker-item::after{content:'◆';font-size:.4rem;margin-left:2rem;opacity:.35}
+    @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    /* HERO VIDEO */
+    .hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:0 3rem 5.5rem;overflow:hidden}
+    .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+    .hero-bg{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.1) 55%,rgba(8,8,8,.65) 100%)}
+    .hero-bars{position:absolute;left:0;right:0;height:65px;background:var(--black);z-index:1}
+    .hero-bars.top{top:0}.hero-bars.bot{bottom:30px}
+    .hero-content{position:relative;z-index:2;max-width:900px}
+    .hero-pre{font-size:.6rem;font-weight:500;letter-spacing:.4em;text-transform:uppercase;color:var(--silver);margin-bottom:1rem;opacity:0;animation:fadeUp 1s ease forwards .4s}
+    .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,12vw,9.5rem);line-height:.92;letter-spacing:.02em;color:var(--white);opacity:0;animation:fadeUp 1s ease forwards .7s}
+    .hero-title .sil{color:var(--silver)}
+    .hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.4rem,3.5vw,2.8rem);font-weight:300;color:rgba(192,192,192,.75);display:block;margin-top:.4rem;letter-spacing:.06em}
+    .hero-tagline{font-size:.82rem;color:rgba(192,192,192,.5);margin-top:1.2rem;letter-spacing:.08em;font-style:italic;opacity:0;animation:fadeUp 1s ease forwards 1.1s}
+    .hero-stats{display:flex;align-items:center;gap:2.5rem;margin-top:2rem;opacity:0;animation:fadeUp 1s ease forwards 1.3s}
+    .hstat-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--silver);line-height:1}
+    .hstat-lbl{font-size:.55rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:.15rem}
+    .hstat-div{width:1px;height:36px;background:var(--border)}
+    .hero-scroll{position:absolute;right:3rem;bottom:4.5rem;z-index:2;display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--muted);font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;writing-mode:vertical-rl;opacity:0;animation:fadeUp 1s ease forwards 1.5s}
+    .hero-scroll-line{width:1px;height:44px;background:linear-gradient(to bottom,var(--silver),transparent)}
+
+    /* SHOWREEL */
+    .showreel{position:relative;background:#000}
+    .showreel-inner{position:relative;width:100%;padding-bottom:56.25%}
+    .showreel-inner iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+    .showreel-label{position:absolute;top:1rem;left:1.5rem;font-family:'Bebas Neue',sans-serif;font-size:.65rem;letter-spacing:.3em;color:var(--silver);z-index:2;background:rgba(8,8,8,.75);padding:.3rem .7rem;border-radius:1px}
+
+    /* COMMONS */
+    .sec-label{font-size:.58rem;font-weight:500;letter-spacing:.38em;text-transform:uppercase;color:var(--silver);margin-bottom:1.1rem;display:flex;align-items:center;gap:.8rem}
+    .sec-label::before{content:'';display:block;width:22px;height:1px;background:var(--silver)}
+    .sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.8rem);letter-spacing:.04em;line-height:.95;color:var(--white)}
+    .body-txt{font-size:.9rem;line-height:1.9;color:var(--muted)}
+    .body-txt strong{color:var(--bright);font-weight:400}
+    .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    /* GALLERY */
+    .gallery{padding:5rem 0 0;border-top:1px solid var(--border)}
+    .gallery-head{padding:0 3rem;margin-bottom:2.5rem}
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+    .g-item{position:relative;aspect-ratio:16/10;overflow:hidden;cursor:pointer;background:var(--card)}
+    .g-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease,filter .4s ease;filter:grayscale(20%)}
+    .g-item:hover img{transform:scale(1.06);filter:grayscale(0%)}
+    .g-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.8),transparent 55%);opacity:0;transition:opacity .3s}
+    .g-item:hover .g-overlay{opacity:1}
+    .g-lbl{position:absolute;bottom:.7rem;left:.9rem;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--silver);z-index:2;opacity:0;transition:opacity .3s;font-weight:500}
+    .g-item:hover .g-lbl{opacity:1}
+
+    /* ABOUT */
+    .about-wrap{border-top:1px solid var(--border);padding:6rem 3rem 7rem}
+    .about-inner{display:grid;grid-template-columns:1fr 1fr;gap:6rem;max-width:1200px;margin:0 auto}
+    .about-body{font-size:.9rem;line-height:1.9;color:var(--muted);margin-bottom:1rem}
+    .about-body strong{color:var(--bright);font-weight:400}
+    .skill-wrap{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+    .skill-tag{font-size:.58rem;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:var(--silver);border:1px solid var(--border);padding:.32rem .75rem;border-radius:2px;transition:border-color .2s,color .2s}
+    .skill-tag:hover{border-color:var(--silver);color:var(--white)}
+
+    /* B/A SLIDER */
+    .ba-wrap{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:3px;cursor:col-resize;user-select:none;background:var(--card);touch-action:none}
+    .ba-before,.ba-after{position:absolute;inset:0}
+    .ba-before img,.ba-after img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+    .ba-after{clip-path:inset(0 50% 0 0)}
+    .ba-slider-line{position:absolute;top:0;bottom:0;left:50%;width:2px;background:white;z-index:10;transform:translateX(-50%)}
+    .ba-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--black);font-weight:700;cursor:col-resize;box-shadow:0 2px 16px rgba(0,0,0,.5)}
+    .ba-lbl{position:absolute;bottom:.7rem;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;padding:.22rem .55rem;border-radius:1px;z-index:5}
+    .ba-lbl.before{left:.7rem;background:rgba(8,8,8,.7);color:var(--muted)}
+    .ba-lbl.after{right:.7rem;background:rgba(8,8,8,.7);color:var(--silver)}
+    .philosophy{background:rgba(255,255,255,.03);border-left:2px solid var(--silver);padding:1.4rem 1.5rem;border-radius:0 5px 5px 0;margin-top:2rem}
+    .philosophy p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;line-height:1.65;color:var(--bright)}
+    .philosophy cite{display:block;margin-top:.6rem;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-style:normal}
+
+    /* VFX SCROLL BREAKDOWN */
+    .vfx-scroll-wrap{position:relative;width:100%;height:400vh;background:var(--black);border-top:1px solid var(--border)}
+    .vfx-sticky{position:sticky;top:0;width:100%;height:100vh;overflow:hidden;background:#000}
+    #vfx-canvas{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100vw;height:100vh;object-fit:cover;z-index:1}
+    .vfx-labels{position:absolute;bottom:10%;left:3rem;z-index:2}
+    .vfx-label{position:absolute;bottom:0;left:0;font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,4rem);letter-spacing:.05em;color:var(--white);opacity:0;transform:translateY(20px);transition:opacity .4s ease,transform .4s ease;white-space:nowrap;pointer-events:none}
+    .vfx-label.active{opacity:1;transform:translateY(0)}
+    .vfx-progress{position:absolute;bottom:0;left:0;height:2px;background:var(--silver);z-index:3;transition:width .1s linear;width:0%}
+    .vfx-section-head{position:absolute;top:2.5rem;left:3rem;z-index:3}
+    .vfx-section-head .sec-label{margin-bottom:.4rem}
+    .vfx-frame-counter{position:absolute;top:2.5rem;right:3rem;z-index:3;font-family:'Bebas Neue',sans-serif;font-size:.75rem;letter-spacing:.25em;color:rgba(192,192,192,.35)}
+    .vfx-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;background:#000;transition:opacity .5s ease}
+    .vfx-loading.hidden{opacity:0;pointer-events:none}
+    .vfx-loading p{font-family:'Bebas Neue',sans-serif;font-size:.75rem;letter-spacing:.3em;color:var(--silver);margin-bottom:1rem}
+    .vfx-load-bar{width:160px;height:1px;background:var(--border)}
+    .vfx-load-fill{height:100%;background:var(--silver);width:0%;transition:width .2s}
+    @media(max-width:1000px){.vfx-labels{left:1.5rem;bottom:15%}.vfx-section-head{left:1.5rem}.vfx-frame-counter{right:1.5rem}}
+
+    /* PORTRAIT SECTION */
+    .portrait-sec{padding:5rem 3rem 6rem;border-top:1px solid var(--border)}
+    .portrait-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+    .portrait-img{width:100%;border-radius:4px;overflow:hidden;aspect-ratio:4/5;background:var(--card)}
+    .portrait-img img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(10%);transition:filter .4s}
+    .portrait-img:hover img{filter:grayscale(0%)}
+    .portrait-btns{margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap}
+    .btn-primary{background:var(--silver);color:var(--black);font-family:'Inter',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:.85rem 1.8rem;text-decoration:none;border-radius:2px;transition:background .2s}
+    .btn-primary:hover{background:var(--white)}
+    .btn-secondary{background:transparent;color:var(--silver);border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:.85rem 1.8rem;text-decoration:none;border-radius:2px;transition:border-color .2s,color .2s}
+    .btn-secondary:hover{border-color:var(--silver);color:var(--white)}
+
+    /* PORTFOLIO */
+    .portfolio{padding:5rem 3rem 7rem;border-top:1px solid var(--border)}
+    .portfolio-inner{max-width:1200px;margin:0 auto}
+    .port-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+    .tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:2px;overflow:hidden}
+    .tab-btn{background:transparent;border:none;border-right:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:.58rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:.55rem .95rem;cursor:pointer;transition:background .2s,color .2s}
+    .tab-btn:last-child{border-right:none}
+    .tab-btn.active{background:var(--silver);color:var(--black)}
+    .tab-btn:not(.active):hover{color:var(--silver)}
+    .tab-panel{display:none}.tab-panel.active{display:block}
+    .works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+    .work-card{background:var(--black);position:relative;overflow:hidden;aspect-ratio:16/10;display:flex;align-items:flex-end;padding:1.2rem;cursor:pointer;text-decoration:none}
+    .wc-thumb{position:absolute;inset:0;background:var(--card);display:flex;align-items:center;justify-content:center;transition:transform .5s ease;overflow:hidden}
+    .work-card:hover .wc-thumb{transform:scale(1.05)}
+    .wc-thumb img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter .3s}
+    .work-card:hover .wc-thumb img{filter:grayscale(0%)}
+    .wc-icon{font-size:2.5rem;opacity:.1;transition:opacity .3s}
+    .work-card:hover .wc-icon{opacity:.18}
+    .wc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.95) 0%,rgba(8,8,8,.1) 65%)}
+    .wc-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border:1px solid rgba(255,255,255,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;opacity:0;transition:opacity .3s}
+    .work-card:hover .wc-play{opacity:1}
+    .wc-content{position:relative;z-index:2}
+    .wc-cat{font-size:.5rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--silver);margin-bottom:.22rem}
+    .wc-title{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.05em;color:var(--white);line-height:1}
+    .wc-role{font-size:.55rem;color:var(--muted);margin-top:.18rem}
+    .wc-arrow{position:absolute;top:.9rem;right:.9rem;z-index:2;width:26px;height:26px;border:1px solid rgba(192,192,192,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--silver);font-size:.6rem;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+    .work-card:hover .wc-arrow{opacity:1;transform:translateY(0)}
+
+    /* SERVICES */
+    .services{padding:5rem 3rem 7rem;border-top:1px solid var(--border)}
+    .services-inner{max-width:1200px;margin:0 auto}
+    .svc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);margin-top:3rem}
+    .svc-card{background:var(--black);padding:2rem 1.4rem;transition:background .3s}
+    .svc-card:hover{background:var(--card)}
+    .svc-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--border);line-height:1;margin-bottom:1rem;transition:color .3s}
+    .svc-card:hover .svc-num{color:var(--silver)}
+    .svc-icon{font-size:1.3rem;margin-bottom:.7rem;display:block}
+    .svc-name{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:.05em;color:var(--white);margin-bottom:.5rem}
+    .svc-desc{font-size:.75rem;line-height:1.7;color:var(--muted)}
+    .svc-list{margin-top:.9rem;list-style:none}
+    .svc-list li{font-size:.65rem;color:var(--muted);padding:.25rem 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.4rem}
+    .svc-list li::before{content:'--';color:var(--silver);font-size:.5rem}
+
+    /* SOFTWARE */
+    .software{padding:4rem 3rem 5rem;border-top:1px solid var(--border)}
+    .software-inner{max-width:1200px;margin:0 auto}
+    .sw-grid{display:flex;flex-wrap:wrap;gap:1px;background:var(--border);margin-top:2.5rem}
+    .sw-item{background:var(--black);padding:1.4rem 1.8rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;flex:1;min-width:90px;transition:background .2s}
+    .sw-item:hover{background:var(--card)}
+    .sw-icon{width:36px;height:36px;object-fit:contain}
+    .sw-icon-emoji{font-size:1.6rem}
+    .sw-name{font-size:.58rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:center;transition:color .2s}
+    .sw-item:hover .sw-name{color:var(--silver)}
+
+    /* CTA */
+    .cta-band{background:var(--silver);padding:4rem 3rem;text-align:center}
+    .cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3.8rem);letter-spacing:.05em;color:var(--black);margin-bottom:.4rem}
+    .cta-sub{font-size:.82rem;color:rgba(0,0,0,.5);margin-bottom:1.8rem}
+    .cta-btn{display:inline-block;background:var(--black);color:var(--silver);font-family:'Inter',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:.9rem 2.2rem;text-decoration:none;border-radius:2px;transition:background .2s,color .2s}
+    .cta-btn:hover{background:#111;color:var(--white)}
+
+    /* CONTACT */
+    .contact{padding:6rem 3rem 9rem;border-top:1px solid var(--border)}
+    .contact-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.3fr;gap:6rem}
+    .c-info{display:flex;flex-direction:column;gap:1.1rem;margin-top:1.8rem}
+    .ci{display:flex;align-items:flex-start;gap:.9rem}
+    .ci-icon{width:32px;height:32px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.78rem;flex-shrink:0;border-radius:2px}
+    .ci-lbl{font-size:.54rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.12rem}
+    .ci-val{font-size:.85rem;color:var(--bright)}
+    .ci-val a{color:inherit;text-decoration:none;transition:color .2s}
+    .ci-val a:hover{color:var(--silver)}
+    .form{display:flex;flex-direction:column;gap:.85rem}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+    .fg{display:flex;flex-direction:column;gap:.32rem}
+    .fl{font-size:.55rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+    .fi,.fs,.ft{background:var(--card);border:1px solid var(--border);color:var(--bright);font-family:'Inter',sans-serif;font-size:.83rem;font-weight:300;padding:.78rem .9rem;border-radius:2px;outline:none;transition:border-color .2s;width:100%}
+    .fi:focus,.fs:focus,.ft:focus{border-color:var(--silver)}
+    .fs{appearance:none;cursor:pointer}
+    .ft{resize:vertical;min-height:115px}
+    .fi::placeholder,.ft::placeholder{color:var(--muted);font-size:.78rem}
+    .fsub{background:var(--silver);color:var(--black);border:none;font-family:'Inter',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:.9rem 2rem;border-radius:2px;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.3rem}
+    .fsub:hover{background:var(--white)}
+    .fmsg{font-size:.76rem;padding:.65rem .85rem;border-radius:2px;display:none}
+    .fmsg.ok{background:rgba(100,200,100,.07);border:1px solid rgba(100,200,100,.22);color:#90ee90;display:block}
+    .fmsg.err{background:rgba(200,80,80,.07);border:1px solid rgba(200,80,80,.22);color:#ff9090;display:block}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--border);padding:2rem 3rem 4rem;display:flex;align-items:center;justify-content:space-between}
+    .foot-logo{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.12em;color:var(--muted)}
+    .foot-copy{font-size:.58rem;color:var(--muted);letter-spacing:.08em}
+    .foot-links{display:flex;gap:1.5rem;list-style:none}
+    .foot-links a{font-size:.58rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;transition:color .2s}
+    .foot-links a:hover{color:var(--silver)}
+
+    /* ANIMS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+    /* RESPONSIVE */
+    @media(max-width:1000px){
+      nav{padding:1.1rem 1.5rem}
+      .nav-links,.nav-cta{display:none}
+      .nav-mob{display:block}
+      .hero{padding:0 1.5rem 5rem}
+      .hero-bars{height:50px}
+      .hero-scroll{display:none}
+      .gallery-grid{grid-template-columns:repeat(2,1fr)}
+      .about-inner{grid-template-columns:1fr;gap:3rem}
+      .about-wrap{padding:4rem 1.5rem}
+      .portrait-inner{grid-template-columns:1fr;gap:2rem}
+      .portrait-sec{padding:4rem 1.5rem}
+      .portfolio{padding:4rem 1.5rem}
+      .port-header{flex-direction:column;align-items:flex-start;gap:1.2rem}
+      .works-grid{grid-template-columns:1fr 1fr}
+      .services{padding:4rem 1.5rem}
+      .svc-grid{grid-template-columns:1fr 1fr}
+      .software{padding:3rem 1.5rem}
+      .contact{padding:4rem 1.5rem 6rem}
+      .contact-inner{grid-template-columns:1fr;gap:3rem}
+      footer{flex-direction:column;gap:1rem;text-align:center;padding:2rem 1.5rem 4rem}
+    }
+    @media(max-width:560px){
+      .works-grid{grid-template-columns:1fr}
+      .svc-grid{grid-template-columns:1fr}
+      .form-row{grid-template-columns:1fr}
+      .gallery-grid{grid-template-columns:1fr}
+      .tabs{flex-wrap:wrap}
+      .hero-stats{gap:1.5rem}
+    }
+    /* DIRECTOR'S CUT BUTTON */
+    .director-cut-btn{position:fixed;top:50%;right:2rem;transform:translateY(-50%);z-index:9999;background:rgba(8,8,8,0.75);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:6px;width:52px;height:52px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .3s,box-shadow .3s}
+    .director-cut-btn:hover{border-color:var(--silver);box-shadow:0 0 20px rgba(192,192,192,0.12)}
+    .dc-tooltip{position:absolute;right:130%;background:var(--silver);color:var(--black);font-family:'Bebas Neue',sans-serif;font-size:.8rem;letter-spacing:.12em;padding:.3rem .7rem;border-radius:2px;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;transform:translateX(8px);white-space:nowrap}
+    .director-cut-btn:hover .dc-tooltip{opacity:1;transform:translateX(0)}
+    .clapper-svg{width:28px;height:28px}
+    #clapper-top{transform-origin:15px 40px;transition:transform .1s cubic-bezier(0.4,0,0.2,1);transform:rotate(-22deg)}
+    .director-cut-btn.snapped #clapper-top{transform:rotate(0deg)}
+    body{transition:background-color .5s ease}
+    body.theater-mode{background-color:#000}
+    body.theater-mode .sec-title,body.theater-mode .body-txt,body.theater-mode .sec-label,body.theater-mode .about-body,body.theater-mode .nav-logo,body.theater-mode .nav-links a,body.theater-mode .hero-pre,body.theater-mode .hero-tagline,body.theater-mode .hero-scroll,body.theater-mode .hero-stats{opacity:0.08;transition:opacity .5s ease}
+    body.theater-mode .hero-video,body.theater-mode .showreel,body.theater-mode .work-card,body.theater-mode .g-item,body.theater-mode .portrait-img{filter:drop-shadow(0 0 30px rgba(192,192,192,0.15));position:relative;z-index:10}
+    body.theater-mode .work-card .wc-thumb img,body.theater-mode .g-item img,body.theater-mode .portrait-img img{filter:grayscale(0%);transition:filter .5s ease}
+    body.theater-mode .ticker,body.theater-mode .cta-band,body.theater-mode footer{opacity:0.04;transition:opacity .5s ease}
+    body.theater-mode nav{background:linear-gradient(to bottom,rgba(0,0,0,0.98),transparent)}
+    body.theater-mode::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:9997}
+    @media(max-width:1000px){.director-cut-btn{top:auto;bottom:2.5rem;right:1.5rem;transform:none}.dc-tooltip{display:none}}
+  </style>
+</head>
+<body>
+<button id="director-cut-btn" class="director-cut-btn" aria-label="Toggle Theater Mode">
+  <svg class="clapper-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect x="15" y="45" width="70" height="40" rx="3" fill="var(--white)"/>
+    <rect x="15" y="45" width="70" height="40" rx="3" fill="var(--silver)" opacity="0.8"/>
+    <g id="clapper-top"><rect x="15" y="25" width="70" height="15" rx="3" fill="var(--white)"/></g>
+  </svg>
+  <span class="dc-tooltip">Director's Cut</span>
+</button>
+<audio id="clap-sound" src="assets/sounds/clapperboard.mp3" preload="auto"></audio>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close" id="mobClose">&#10005;</button>
+  <a href="#showreel" onclick="closeMob()">Showreel</a>
+  <a href="#gallery" onclick="closeMob()">Gallery</a>
+  <a href="#about" onclick="closeMob()">About</a>
+  <a href="#vfx-breakdown" onclick="closeMob()">VFX</a>
+  <a href="#portfolio" onclick="closeMob()">Works</a>
+  <a href="#services" onclick="closeMob()">Services</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Shanmukha <span>Creations</span></a>
+  <ul class="nav-links">
+    <li><a href="#showreel">Showreel</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#vfx-breakdown">VFX</a></li>
+    <li><a href="#portfolio">Works</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire Me</a>
+  <button class="nav-mob" id="mobOpen">&#9776;</button>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Cinematography</span>
+    <span class="ticker-item">Direction</span>
+    <span class="ticker-item">VFX &amp; Animation</span>
+    <span class="ticker-item">Color Grading</span>
+    <span class="ticker-item">Editing</span>
+    <span class="ticker-item">Shanmukha Creations</span>
+    <span class="ticker-item">Visual Storytelling</span>
+    <span class="ticker-item">Bengaluru, India</span>
+    <span class="ticker-item">Est. 2022</span>
+    <span class="ticker-item">Cinematography</span>
+    <span class="ticker-item">Direction</span>
+    <span class="ticker-item">VFX &amp; Animation</span>
+    <span class="ticker-item">Color Grading</span>
+    <span class="ticker-item">Editing</span>
+    <span class="ticker-item">Shanmukha Creations</span>
+    <span class="ticker-item">Visual Storytelling</span>
+    <span class="ticker-item">Bengaluru, India</span>
+    <span class="ticker-item">Est. 2022</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <video class="hero-video" autoplay muted loop playsinline poster="assets/hero/hero-fallback.webp">
+    <source src="assets/hero/hero.webm" type="video/webm"/>
+    <source src="assets/hero/hero.mp4" type="video/mp4"/>
+    <!-- Fallback image if no video uploaded yet -->
+  </video>
+  <!-- Fallback bg image shown until video loads -->
+  <div style="position:absolute;inset:0;background-image:url('assets/hero/hero-fallback.webp');background-size:cover;background-position:center top;z-index:0"></div>
+  <div class="hero-bg"></div>
+  <div class="hero-bars top"></div>
+  <div class="hero-bars bot"></div>
+  <div class="hero-content">
+    <p class="hero-pre">Shanmukha Creations &middot; Est. 2022 &middot; Bengaluru, India</p>
+    <h1 class="hero-title">
+      I Don't Just<br>Create <span class="sil">Frames</span>
+      <span class="hero-sub">I tell stories that stay.</span>
+    </h1>
+    <p class="hero-tagline">Cinematographer &nbsp;&middot;&nbsp; VFX Artist &nbsp;&middot;&nbsp; Director &nbsp;&middot;&nbsp; Editor</p>
+    <div class="hero-stats">
+      <div>
+        <div class="hstat-num" id="statProj">10+</div>
+        <div class="hstat-lbl">Projects</div>
+      </div>
+      <div class="hstat-div"></div>
+      <div>
+        <div class="hstat-num" id="statYrs">3+</div>
+        <div class="hstat-lbl">Years Experience</div>
+      </div>
+      <div class="hstat-div"></div>
+      <div>
+        <div class="hstat-num" id="statClients">6+</div>
+        <div class="hstat-lbl">Happy Clients</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll"><span class="hero-scroll-line"></span>Scroll</div>
+</section>
+
+<!-- SHOWREEL -->
+<div class="showreel reveal" id="showreel">
+  <span class="showreel-label">Cinematography Showreel &middot; 2024</span>
+  <div class="showreel-inner">
+    <iframe src="https://player.vimeo.com/video/814669506?title=0&byline=0&portrait=0" allowfullscreen allow="fullscreen"></iframe>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section class="gallery reveal" id="gallery">
+  <div class="gallery-head">
+    <p class="sec-label">Frames from the Field</p>
+    <h2 class="sec-title">Stills Gallery</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="g-item"><img src="assets/gallery/still1.webp" alt="Channapatna Documentary" loading="lazy"/><div class="g-overlay"></div><span class="g-lbl">Channapatna Documentary</span></div>
+    <div class="g-item"><img src="assets/gallery/still2.webp" alt="Short Film" loading="lazy"/><div class="g-overlay"></div><span class="g-lbl">Short Film</span></div>
+    <div class="g-item"><img src="assets/gallery/still3.webp" alt="Short Film" loading="lazy"/><div class="g-overlay"></div><span class="g-lbl">Short Film</span></div>
+    <div class="g-item"><img src="assets/gallery/still4.webp" alt="Cinematic Frame" loading="lazy"/><div class="g-overlay"></div><span class="g-lbl">Cinematic Frame</span></div>
+    <div class="g-item"><img src="assets/gallery/still5.webp" alt="Karaga" loading="lazy"/><div class="g-overlay"></div><span class="g-lbl">Karaga</span></div>
+    <div class="g-item"><img src="assets/gallery/still7.webp" alt="Channapatna" loading="lazy"/><div class="g-overlay"></div><span class="g-lbl">Channapatna</span></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-wrap reveal" id="about">
+  <div class="about-inner">
+    <div>
+      <p class="sec-label">The Filmmaker</p>
+      <h2 class="sec-title" style="margin-bottom:1.8rem">About<br>Shanmukha</h2>
+      <p class="about-body"><strong>Shanmukha KN</strong> is a filmmaker and visual artist based in <strong>Bengaluru, India</strong> &mdash; specialising in cinematography, VFX, direction, and editing. A storyteller by instinct, a technician by training.</p>
+      <p class="about-body">His journey began with short films and documentaries as early as <strong>2016</strong> at CREO Valley School of Film and Television &mdash; shooting stories that mattered with whatever gear was at hand. From corporate films for <strong>Devi Sea Foods</strong> and <strong>Tarantula</strong>, to 3D generalist work, news bulletins, and documentary filmmaking &mdash; Shanmukha brings a hands-on, versatile approach to every production.</p>
+      <div class="skill-wrap">
+        <span class="skill-tag">Cinematography</span>
+        <span class="skill-tag">Direction</span>
+        <span class="skill-tag">VFX</span>
+        <span class="skill-tag">3D Generalist</span>
+        <span class="skill-tag">Color Grading</span>
+        <span class="skill-tag">Editing</span>
+        <span class="skill-tag">Motion Graphics</span>
+        <span class="skill-tag">Short Films</span>
+        <span class="skill-tag">Documentaries</span>
+        <span class="skill-tag">Corporates</span>
+      </div>
+    </div>
+    <div>
+      <p class="sec-label" style="margin-bottom:1rem">Before &amp; After &mdash; Color Grade</p>
+      <div class="ba-wrap" id="baWrap">
+        <div class="ba-before">
+          <img src="portraits/portrait-before.webp" alt="Before"/>
+          <span class="ba-lbl before">Before</span>
+        </div>
+        <div class="ba-after" id="baAfter">
+          <img src="portraits/portrait-after.webp" alt="After"/>
+          <span class="ba-lbl after">After</span>
+        </div>
+        <div class="ba-slider-line" id="baLine">
+          <div class="ba-handle">&#8660;</div>
+        </div>
+      </div>
+      <div class="philosophy">
+        <p>&ldquo;Every story deserves to be told beautifully. Every frame is a canvas. Every edit is a heartbeat.&rdquo;</p>
+        <cite>&mdash; Shanmukha KN, Cinematographer / VFX Artist</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VFX SCROLL BREAKDOWN -->
+<section class="vfx-scroll-wrap" id="vfx-breakdown">
+  <div class="vfx-sticky">
+    <canvas id="vfx-canvas"></canvas>
+
+    <!-- Loading screen -->
+    <div class="vfx-loading" id="vfxLoading">
+      <p>Loading VFX Breakdown</p>
+      <div class="vfx-load-bar"><div class="vfx-load-fill" id="vfxLoadFill"></div></div>
+    </div>
+
+    <!-- Section header -->
+    <div class="vfx-section-head">
+      <p class="sec-label">3D Breakdown</p>
+    </div>
+
+    <!-- Frame counter -->
+    <div class="vfx-frame-counter" id="vfxCounter">001 / 094</div>
+
+    <!-- Progress bar at bottom -->
+    <div class="vfx-progress" id="vfxProgress"></div>
+
+    <!-- Dynamic text labels -->
+    <div class="vfx-labels">
+      <h3 class="vfx-label active" id="lbl-raw">01 / Raw Plate</h3>
+      <h3 class="vfx-label" id="lbl-mesh">02 / 3D Tracking &amp; Wireframe</h3>
+      <h3 class="vfx-label" id="lbl-comp">03 / Textures &amp; Lighting</h3>
+      <h3 class="vfx-label" id="lbl-final">04 / Final Composite</h3>
+    </div>
+  </div>
+</section>
+
+<!-- PORTRAIT SECTION -->
+<section class="portrait-sec reveal">
+  <div class="portrait-inner">
+    <div class="portrait-img">
+      <img src="portraits/portrait-profile.webp" alt="Shanmukha — Cinematographer & VFX Artist">
+    </div>
+    <div>
+      <p class="sec-label">Shanmukha K N</p>
+      <h2 class="sec-title" style="margin-bottom:1.5rem">Cinematographer<br>&amp; VFX Artist</h2>
+      <p class="body-txt" style="margin-bottom:1rem">Crafting visual stories through the art of cinematography and the magic of visual effects. Based in <strong>Bengaluru</strong>, available for projects across India and internationally.</p>
+      <p class="body-txt">Cinematography &nbsp;&middot;&nbsp; Visual Effects &nbsp;&middot;&nbsp; Storytelling</p>
+      <div class="portrait-btns">
+        <a href="#portfolio" class="btn-primary">View Works</a>
+        <a href="#contact" class="btn-secondary">Hire Me</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio reveal" id="portfolio">
+  <div class="portfolio-inner">
+    <div class="port-header">
+      <div>
+        <p class="sec-label">Selected Works</p>
+        <h2 class="sec-title">Portfolio</h2>
+      </div>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="all">All</button>
+        <button class="tab-btn" data-tab="cine">Cine</button>
+        <button class="tab-btn" data-tab="dir">Direction</button>
+        <button class="tab-btn" data-tab="vfx">VFX</button>
+        <button class="tab-btn" data-tab="edit">Edit</button>
+      </div>
+    </div>
+
+    <div class="tab-panel active" id="tab-all">
+      <div class="works-grid">
+        <a class="work-card" href="https://vimeo.com/814669506" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-cine-showreel.webp" alt="Cinematography Showreel"></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">Cinematography</p><p class="wc-title">Cinematography Showreel</p><p class="wc-role">Cinematographer &middot; 2024</p></div>
+        </a>
+        <a class="work-card" href="https://vimeo.com/995428063" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-vfx-showreel.webp" alt="VFX Showreel"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">VFX &middot; 3D Generalist</p><p class="wc-title">3D Animation &amp; VFX Showreel</p><p class="wc-role">VFX Artist &middot; 2024</p></div>
+        </a>
+        <a class="work-card" href="https://youtu.be/4sz1VqQYQWQ" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-devi-seafoods.webp" alt="Devi Sea Foods"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">Corporate Film</p><p class="wc-title">Devi Sea Foods</p><p class="wc-role">Production Coordinator &amp; Camera &middot; 2024</p></div>
+        </a>
+        <a class="work-card" href="https://youtu.be/8OiLUzWd9fQ" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-tarantula.webp" alt="Tarantula"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">Corporate Film</p><p class="wc-title">Tarantula</p><p class="wc-role">Production Coordinator &amp; Camera &middot; 2022</p></div>
+        </a>
+        <a class="work-card" href="https://youtu.be/mQT49DSavlE" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-south-matters.webp" alt="South Matters"></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">News Bulletin</p><p class="wc-title">South Matters</p><p class="wc-role">Cameraman &middot; CJMC 2022</p></div>
+        </a>
+        <a class="work-card" href="https://youtu.be/TXsC-OzW02g" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-channapatna.webp" alt="Channapatna"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">Documentary</p><p class="wc-title">The Soul of Channapatna</p><p class="wc-role">Director &amp; Editor &middot; 2016</p></div>
+        </a>
+        <a class="work-card" href="https://youtu.be/jFg2SD09iuA" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-promise.webp" alt="Promise"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">Short Film</p><p class="wc-title">Promise</p><p class="wc-role">Asst. Cinematographer &middot; 2016</p></div>
+        </a>
+        <a class="work-card" href="https://youtu.be/GdVCOr5ZedI" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-misconception.webp" alt="Misconception"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">Short Film</p><p class="wc-title">Misconception</p><p class="wc-role">Artist &middot; 2016</p></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-cine">
+      <div class="works-grid">
+        <a class="work-card" href="https://vimeo.com/814669506" target="_blank" rel="noopener">
+          <<div class="wc-thumb"><img src="assets/thumbnails/thumb-cine-showreel.webp" alt="Cinematography Showreel"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">Cinematography</p><p class="wc-title">Cinematography Showreel</p><p class="wc-role">Cinematographer &middot; 2024</p></div>
+        </a>
+        <a class="work-card" href="https://youtu.be/4sz1VqQYQWQ" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-devi-seafoods.webp" alt="Devi Sea Foods"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">Corporate Film</p><p class="wc-title">Devi Sea Foods</p><p class="wc-role">Camera &middot; 2024</p></div>
+        </a>
+        <a class="work-card" href="https://youtu.be/jFg2SD09iuA" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-promise.webp" alt="Promise"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">Short Film</p><p class="wc-title">Promise</p><p class="wc-role">Asst. Cinematographer &middot; 2016</p></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-dir">
+      <div class="works-grid">
+        <a class="work-card" href="https://youtu.be/TXsC-OzW02g" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-channapatna.webp" alt="Channapatna"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">Documentary</p><p class="wc-title">The Soul of Channapatna</p><p class="wc-role">Director &amp; Editor &middot; 2016</p></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-vfx">
+      <div class="works-grid">
+        <a class="work-card" href="https://vimeo.com/995428063" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-vfx-showreel.webp" alt="VFX Showreel"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">VFX &middot; 3D</p><p class="wc-title">3D Animation &amp; VFX Showreel</p><p class="wc-role">VFX Artist &middot; 2024</p></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-edit">
+      <div class="works-grid">
+        <a class="work-card" href="https://youtu.be/TXsC-OzW02g" target="_blank" rel="noopener">
+          <div class="wc-thumb"><img src="assets/thumbnails/thumb-channapatna.webp" alt="Channapatna"/></div>
+          <div class="wc-overlay"></div><div class="wc-play">&#9654;</div><div class="wc-arrow">&#8599;</div>
+          <div class="wc-content"><p class="wc-cat">Documentary Edit</p><p class="wc-title">The Soul of Channapatna</p><p class="wc-role">Editor &middot; 2016</p></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services reveal" id="services">
+  <div class="services-inner">
+    <p class="sec-label">What I Do</p>
+    <h2 class="sec-title">Services</h2>
+    <div class="svc-grid">
+      <div class="svc-card"><div class="svc-num">01</div><span class="svc-icon">&#127909;</span><p class="svc-name">Cinematography</p><p class="svc-desc">Visual storytelling through light, composition, and motion.</p><ul class="svc-list"><li>Feature &amp; Short Films</li><li>Documentaries</li><li>Corporate Films</li><li>Music Videos</li><li>Commercials</li></ul></div>
+      <div class="svc-card"><div class="svc-num">02</div><span class="svc-icon">&#127910;</span><p class="svc-name">Direction</p><p class="svc-desc">Bringing scripts to life with vision and narrative craft.</p><ul class="svc-list"><li>Short Films</li><li>Brand Films</li><li>Ad Films</li><li>Music Videos</li><li>Web Series</li></ul></div>
+      <div class="svc-card"><div class="svc-num">03</div><span class="svc-icon">&#10024;</span><p class="svc-name">VFX &amp; 3D</p><p class="svc-desc">Creating impossible worlds and stunning visual effects.</p><ul class="svc-list"><li>Compositing</li><li>3D Generalist</li><li>Visual Effects</li><li>Motion Graphics</li><li>3D Animation</li></ul></div>
+      <div class="svc-card"><div class="svc-num">04</div><span class="svc-icon">&#127912;</span><p class="svc-name">Color Grading</p><p class="svc-desc">Cinematic color science defining mood and visual identity.</p><ul class="svc-list"><li>Color Grading</li><li>Color Correction</li><li>LUT Creation</li><li>DaVinci Resolve</li><li>Film Emulation</li></ul></div>
+      <div class="svc-card"><div class="svc-num">05</div><span class="svc-icon">&#9986;</span><p class="svc-name">Editing</p><p class="svc-desc">Precision cuts and pacing that keep audiences gripped.</p><ul class="svc-list"><li>Film Editing</li><li>Sound Design</li><li>Reels &amp; Trailers</li><li>Social Content</li><li>Documentary Edit</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOFTWARE -->
+<section class="software reveal">
+  <div class="software-inner">
+    <p class="sec-label">Tools of the Trade</p>
+    <h2 class="sec-title">Software I Use</h2>
+    <div class="sw-grid">
+      <div class="sw-item"><img src="assets/icons/icon-davinci.png" alt="DaVinci Resolve" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#127910;</span><span class="sw-name">DaVinci Resolve</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-avid.png" alt="Avid Medi Composser" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#127910;</span><span class="sw-name">Avid Medi Composser</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-premiere.png" alt="Premiere" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#127909;</span><span class="sw-name">Adobe Premiere</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-aftereffects.png" alt="After Effects" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#10024;</span><span class="sw-name">After Effects</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-photoshop.png" alt="Photoshop" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#127912;</span><span class="sw-name">Photoshop</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-finalcut.png" alt="Final Cut Pro" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#127912;</span><span class="sw-name">Final Cut Pro</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-blender.png" alt="Blender" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#127744;</span><span class="sw-name">Blender</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-maya.png" alt="Maya" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#128160;</span><span class="sw-name">Maya</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-houdini.png" alt="Houdini" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#128293;</span><span class="sw-name">Houdini</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-cinema4d.png" alt="Cinema 4D" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#128293;</span><span class="sw-name">Cinema 4D</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-3dequilizer4.png" alt="3DEquilizer" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#128293;</span><span class="sw-name">3DEquilizer</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-nuke.png" alt="Nuke" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#128161;</span><span class="sw-name">Nuke</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-silhoutte.png" alt="Silhoutte" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#128161;</span><span class="sw-name">Silhoutte</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-fusion.png" alt="Fusion Studio" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#128161;</span><span class="sw-name">Fusion Studio</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-unreal.png" alt="Unreal Engine" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#127760;</span><span class="sw-name">Unreal Engine</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-zbrush.png" alt="Zbrush" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#127760;</span><span class="sw-name">Zbrush</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-substance.png" alt="Substance" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#128204;</span><span class="sw-name">Substance</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-redshift.png" alt="Redshift" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#128308;</span><span class="sw-name">Redshift</span></div>
+      <div class="sw-item"><img src="assets/icons/icon-illustrator.png" alt="Illustrator" class="sw-icon" onerror="this.style.display='none';this.nextSibling.style.display='block'"/><span class="sw-icon-emoji" style="display:none">&#128308;</span><span class="sw-name">Illustrator</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band reveal">
+  <h2 class="cta-title">Ready to Create Something Extraordinary?</h2>
+  <p class="cta-sub">Let&rsquo;s tell your story the cinematic way &mdash; frame by frame.</p>
+  <a href="#contact" class="cta-btn">Start a Project &rarr;</a>
+</div>
+
+<!-- CONTACT -->
+<section class="contact reveal" id="contact">
+  <div class="contact-inner">
+    <div>
+      <p class="sec-label">Get In Touch</p>
+      <h2 class="sec-title" style="margin-bottom:1.2rem">Let&rsquo;s Work<br>Together</h2>
+      <p class="body-txt">Have a project in mind? Whether it&rsquo;s a feature film, corporate video, music video, or anything in between &mdash; I&rsquo;d love to hear about it.</p>
+      <div class="c-info">
+        <div class="ci"><div class="ci-icon">&#128222;</div><div><div class="ci-lbl">Phone / WhatsApp</div><div class="ci-val"><a href="tel:+91XXXXXXXXXX">+91 [YOUR PHONE]</a></div></div></div>
+        <div class="ci"><div class="ci-icon">&#9993;</div><div><div class="ci-lbl">Email</div><div class="ci-val"><a href="mailto:shanmukhacreationfilms@gmail.com">shanmukhacreationfilms@gmail.com</a></div></div></div>
+        <div class="ci"><div class="ci-icon">&#128205;</div><div><div class="ci-lbl">Based In</div><div class="ci-val">Bengaluru, Karnataka, India</div></div></div>
+      </div>
+    </div>
+    <div>
+      <p class="sec-label">Send a Message</p>
+      <form class="form" id="cForm">
+        <div class="form-row">
+          <div class="fg"><label class="fl">Your Name</label><input class="fi" type="text" placeholder="Your name" required id="fn"/></div>
+          <div class="fg"><label class="fl">Phone</label><input class="fi" type="tel" placeholder="+91 00000 00000" id="fp"/></div>
+        </div>
+        <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" placeholder="you@email.com" required id="fe"/></div>
+        <div class="fg"><label class="fl">Project Type</label>
+          <select class="fs" id="ft"><option value="" disabled selected>Select a service</option><option>Cinematography</option><option>Direction</option><option>VFX &amp; 3D</option><option>Color Grading</option><option>Editing</option><option>Multiple Services</option><option>Other</option></select>
+        </div>
+        <div class="fg"><label class="fl">Project Details</label><textarea class="ft" placeholder="Tell me about your project, timeline, budget..." id="fm" required></textarea></div>
+        <div class="fmsg" id="fmsg"></div>
+        <button type="submit" class="fsub" id="fsub"><span id="ftxt">Send Message</span><span>&rarr;</span></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="foot-logo">Shanmukha Creations</span>
+  <span class="foot-copy">&copy; 2025 Shanmukha Creations &middot; Bengaluru &middot; All rights reserved.</span>
+  <ul class="foot-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#portfolio">Works</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  emailjs.init('aPY9JypVMnzBrltqR');
+  var EJS_SVC = 'service_zy5eu6f', EJS_TPL = 'template_ddslyjt';
+
+  /* CURSOR */
+  var cur = document.getElementById('cur');
+  var ring = document.getElementById('cur-ring');
+  if (window.matchMedia('(hover:hover)').matches) {
+    document.addEventListener('mousemove', function(e) {
+      cur.style.left = ring.style.left = e.clientX + 'px';
+      cur.style.top = ring.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a,button').forEach(function(el) {
+      el.addEventListener('mouseenter', function() { document.body.classList.add('cur-hover'); });
+      el.addEventListener('mouseleave', function() { document.body.classList.remove('cur-hover'); });
+    });
+  }
+
+  /* MOBILE NAV */
+  document.getElementById('mobOpen').onclick = function() { document.getElementById('mobMenu').classList.add('open'); };
+  document.getElementById('mobClose').onclick = function() { document.getElementById('mobMenu').classList.remove('open'); };
+  function closeMob() { document.getElementById('mobMenu').classList.remove('open'); }
+
+  /* TABS */
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.onclick = function() {
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    };
+  });
+
+  /* SCROLL REVEAL */
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+
+  /* COUNTER */
+  function animCount(el, target, suffix) {
+    var start = 0;
+    var dur = 1800;
+    var step = 16;
+    var inc = target / (dur / step);
+    var t = setInterval(function() {
+      start = Math.min(start + inc, target);
+      el.textContent = Math.floor(start) + suffix;
+      if (start >= target) clearInterval(t);
+    }, step);
+  }
+  var heroObs = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting) {
+      animCount(document.getElementById('statProj'), 10, '+');
+      animCount(document.getElementById('statYrs'), 3, '+');
+      animCount(document.getElementById('statClients'), 6, '+');
+      heroObs.disconnect();
+    }
+  }, { threshold: 0.3 });
+  heroObs.observe(document.querySelector('.hero-stats'));
+
+  /* BEFORE/AFTER SLIDER */
+  var baWrap = document.getElementById('baWrap');
+  var baAfter = document.getElementById('baAfter');
+  var baLine = document.getElementById('baLine');
+  var dragging = false;
+  function setBA(x) {
+    var r = baWrap.getBoundingClientRect();
+    var pct = Math.max(2, Math.min(98, (x - r.left) / r.width * 100));
+    baAfter.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
+    baLine.style.left = pct + '%';
+  }
+  baWrap.addEventListener('mousedown', function(e) { dragging = true; setBA(e.clientX); });
+  window.addEventListener('mousemove', function(e) { if (dragging) setBA(e.clientX); });
+  window.addEventListener('mouseup', function() { dragging = false; });
+  baWrap.addEventListener('touchstart', function(e) { dragging = true; setBA(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchmove', function(e) { if (dragging) setBA(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchend', function() { dragging = false; });
+
+  /* CONTACT FORM */
+  document.getElementById('cForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var btn = document.getElementById('fsub');
+    var txt = document.getElementById('ftxt');
+    var msg = document.getElementById('fmsg');
+    btn.disabled = true; txt.textContent = 'Sending...'; msg.className = 'fmsg';
+    emailjs.send(EJS_SVC, EJS_TPL, {
+      subject: 'New Enquiry - ' + document.getElementById('fn').value + ' | Shanmukha Creations',
+      message: 'New enquiry!\n\nName: ' + document.getElementById('fn').value + '\nPhone: ' + (document.getElementById('fp').value || 'Not provided') + '\nEmail: ' + document.getElementById('fe').value + '\nService: ' + (document.getElementById('ft').value || 'Not selected') + '\n\nProject:\n' + document.getElementById('fm').value
+    }).then(function() {
+      msg.className = 'fmsg ok'; msg.textContent = 'Message sent! I will get back to you soon.';
+      document.getElementById('cForm').reset();
+    }).catch(function() {
+      msg.className = 'fmsg err'; msg.textContent = 'Something went wrong. Please email me directly.';
+    }).finally(function() {
+      btn.disabled = false; txt.textContent = 'Send Message';
+    });
+  });
+  /* ---------------------------------------------------
+     3D SCROLL-DRIVEN VFX SEQUENCE SCRUBBER
+     Images: assets/3ds/3ds_00100.jpg → 3ds_00193.jpg
+     Total frames: 94
+  --------------------------------------------------- */
+  (function() {
+    var canvas = document.getElementById('vfx-canvas');
+    var ctx = canvas.getContext('2d');
+    var vfxWrap = document.getElementById('vfx-breakdown');
+    var loadScreen = document.getElementById('vfxLoading');
+    var loadFill = document.getElementById('vfxLoadFill');
+    var progressBar = document.getElementById('vfxProgress');
+    var counter = document.getElementById('vfxCounter');
+
+    // ---- CONFIG: your actual frame range ----
+    var firstFrame = 1;    // frame_001.webp
+    var lastFrame  = 94;   // frame_094.webp
+    var frameCount = lastFrame - firstFrame + 1; // = 94
+
+    // Build file path for each frame index (0-based)
+    function framePath(i) {
+      var num = (firstFrame + i).toString().padStart(3, '0');
+      return 'assets/vfx-sequence/frame_' + num + '.webp';
+    }
+
+    // Preload all images
+    var images = [];
+    var loadedCount = 0;
+    var scrollIndex = 0;
+    var ready = false;
+
+    function preload() {
+      for (var i = 0; i < frameCount; i++) {
+        (function(idx) {
+          var img = new Image();
+          img.onload = function() {
+            loadedCount++;
+            var pct = Math.round((loadedCount / frameCount) * 100);
+            loadFill.style.width = pct + '%';
+            if (loadedCount === frameCount) {
+              ready = true;
+              loadScreen.classList.add('hidden');
+              resizeCanvas();
+              renderFrame(0);
+            }
+          };
+          img.onerror = function() {
+            // Still count it so loading screen clears even on missing files
+            loadedCount++;
+            if (loadedCount === frameCount) {
+              ready = true;
+              loadScreen.classList.add('hidden');
+            }
+          };
+          img.src = framePath(idx);
+          images[idx] = img;
+        })(i);
+      }
+    }
+
+    // Fit-cover draw on canvas
+    function renderFrame(idx) {
+      if (!images[idx] || !images[idx].complete || !images[idx].naturalWidth) return;
+      var img = images[idx];
+      var scale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
+      var x = (canvas.width  - img.naturalWidth  * scale) / 2;
+      var y = (canvas.height - img.naturalHeight * scale) / 2;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, x, y, img.naturalWidth * scale, img.naturalHeight * scale);
+      // Update frame counter display
+      var frameNum = (firstFrame + idx).toString().padStart(3, '0');
+      var lastNum = lastFrame.toString().padStart(3, '0');
+      counter.textContent = frameNum + ' / ' + lastNum;
+    }
+
+    function resizeCanvas() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+      if (ready) renderFrame(scrollIndex);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    preload();
+
+    // Scroll handler
+    window.addEventListener('scroll', function() {
+      var rect = vfxWrap.getBoundingClientRect();
+      var scrollable = rect.height - window.innerHeight;
+      var pct = Math.max(0, Math.min(1, -rect.top / scrollable));
+
+      // Progress bar
+      progressBar.style.width = (pct * 100) + '%';
+
+      // Frame index
+      var idx = Math.min(Math.floor(pct * (frameCount - 1)), frameCount - 1);
+      if (idx !== scrollIndex) {
+        scrollIndex = idx;
+        if (ready) requestAnimationFrame(function() { renderFrame(scrollIndex); });
+      }
+
+      // Text label switching
+      document.querySelectorAll('.vfx-label').forEach(function(l) { l.classList.remove('active'); });
+      if (pct < 0.25) {
+        document.getElementById('lbl-raw').classList.add('active');
+      } else if (pct < 0.5) {
+        document.getElementById('lbl-mesh').classList.add('active');
+      } else if (pct < 0.85) {
+        document.getElementById('lbl-comp').classList.add('active');
+      } else {
+        document.getElementById('lbl-final').classList.add('active');
+      }
+    }, { passive: true });
+  })();
+
+  var dcBtn = document.getElementById('director-cut-btn');
+  var clapSound = document.getElementById('clap-sound');
+  dcBtn.addEventListener('click', function() {
+    if (clapSound) { clapSound.currentTime = 0; clapSound.play().catch(function(){}); }
+    dcBtn.classList.add('snapped');
+    setTimeout(function() { dcBtn.classList.remove('snapped'); }, 150);
+    document.body.classList.toggle('theater-mode');
+    var tooltip = dcBtn.querySelector('.dc-tooltip');
+    tooltip.textContent = document.body.classList.contains('theater-mode') ? 'Lights On' : "Director's Cut";
+  });
+</script>
+</body>
+</html>

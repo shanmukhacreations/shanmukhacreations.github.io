@@ -1,0 +1,9 @@
+│   ├── thumbnails/
+│   │   ├── thumb-misconception.webp
+│   │   ├── thumb-promise.webp
+│   │   ├── thumb-channapatna.webp
+│   │   ├── thumb-vfx-showreel.webp
+│   │   ├── thumb-devi-seafoods.webp
+│   │   ├── thumb-tarantula.webp
+│   │   ├── thumb-south-matters.webp
+│   │   └── thumb-cine-showreel.webp
